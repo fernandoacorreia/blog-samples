@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hello Dojo</title>
+    <link rel="stylesheet" href="style/demo.css">
+    <script>
+        // Instead of using data-dojo-config, we’re creating a dojoConfig object
+        // *before* we load dojo.js; they’re functionally identical.
+        var dojoConfig = {
+            async: true,
+            // This code registers the correct location of the "app" package
+            // so we can load Dojo from the CDN whilst still being able to
+            // load local modules
+            packages: [{
+                name: "app",
+                location: location.pathname.replace(/\/[^/]+$/, '') + 'app'
+            }]
+        };
+    </script>
+    <!-- load Dojo -->
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js"></script>
+</head>
+<body>
+    <h1 id="greeting">Hello, world!</h1>
+    <script>
+        // Require the module we created, plus dojo/fx, and wait for DOM ready
+        require(["app/myModule", "dojo/fx", "dojo/domReady!"], function(myModule, fx){
+            // Use our module to change the text in the greeting
+            myModule.setText("greeting", "Hello, Dojo!");
+
+            fx.slideTo({
+                top: 100,
+                left: 200,
+                node: greeting
+            }).play();
+
+            // After a few seconds, restore the text to its original state
+            setTimeout(function(){
+                myModule.restoreText("greeting");
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
